@@ -1,0 +1,9 @@
+-- SELECT 
+-- Customer.customerID, Customer.name, Orders.orderID, Orders.cost, Menus.cuisines, MenuItems.courses, MenuItems.starters
+-- FROM Customer
+-- INNER JOIN Orders
+-- ON Customer.customerID = Orders.orderID
+-- INNER JOIN Menus
+-- ON Menus.orderId = Orders.orderID
+-- INNER JOIN MenuItems
+-- ON MenuItems.menuitemID = Menus.menuitemID
