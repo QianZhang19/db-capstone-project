@@ -4,8 +4,9 @@ from mysql.connector import Error
 
 try:
     connection=connector.connect(
-                                user="admin1", # use your own
-                                password="zhangqian0109", # use your own
+                                user="admin1", 
+                                password="zhangqian0109",
+                                db = "LittleLemonDB"
                                 )
 
 except Error as er:
@@ -14,53 +15,25 @@ except Error as er:
 
 cursor = connection.cursor(buffered = True)
 
-cursor.execute("USE LittleLemonDB")
+# cursor.execute("USE LittleLemonDB")
 
-# cursor.execute("SHOW tables;")
-
-# tables = cursor.fetchall()
-
-# if tables:
-#     print("There are tables in the LittleLemonDB")
-#     for table in tables:
-#         print(table)
-
-# else:
-#     print("No table found")
+# # A test query
+# show_tables_query = "SHOW tables"
+# cursor.execute(show_tables_query)
+# results = cursor.fetchall()
+# print(results)
 
 
-view_t = """CREATE VIEW OrdersView AS
-SELECT orderID, quantity, cost 
-FROM Orders
-WHERE quantity>2;
-"""
-
-
-join_t = """SELECT 
-Customer.customerID, Customer.name, Orders.orderID, Orders.cost, Menus.cuisines, MenuItems.courses, MenuItems.starters
+# query customer(name, contact) who order is greater than 60
+qu = """
+SELECT Customer.name, Customer.contact, Orders.cost
 FROM Customer
 INNER JOIN Orders
-ON Customer.customerID = Orders.orderID
-INNER JOIN Menus
-ON Menus.orderId = Orders.orderID
-INNER JOIN MenuItems
-ON MenuItems.menuitemID = Menus.menuitemID
+ON Customer.customerID = Orders.customerID
+WHERE Orders.cost > 60;
 """
 
+cursor.execute(qu)
+res = cursor.fetchall()
 
-suq = """SELECT
-cuisines AS MenuName
-FROM Menus
-WHERE menuID =
-ANY (SELECT menuID FROM Orders WHERE quantity >=2)
-"""
-
-# Create optimised queries to manage and analyse data
-max_order = """
-CREATE PROCEDURE GetMaxQuantity()
-BEGIN
-SELECT MAX(quantity)
-FROM Orders
-END
-
-"""
+print (res)
